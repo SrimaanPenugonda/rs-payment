@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include: [ "*" ]
+  tags:
+    include: [ "*" ]
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+  - script: |
+      mkdir $(Build.ArtifactStagingDirectory)/publish
+      cp -r payment.ini payment.py rabbitmq.py requirements.txt $(Build.ArtifactStagingDirectory)/publish
+    displayName: 'Make artifacts ready'
+
+  - task: UniversalPackages@0
+    inputs:
+      command: 'publish'
+      publishDirectory: '$(Build.ArtifactStagingDirectory)/publish'
+      feedsToUsePublish: 'internal'
+      vstsFeedPublish: 'f635c088-1047-40e8-8c29-2e3b05a38010/f955fae1-be95-4094-bf98-2e55fc5e5985'
+      vstsFeedPackagePublish: 'payment'
+      versionOption: 'custom'
+      versionPublish: '$(Build.SourceBranchName)'
+    displayName: Publish Artficats
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
