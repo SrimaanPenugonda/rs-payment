@@ -12,6 +12,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - task: SonarQubePreBuild@1
+    inputs:
+      projectKey: 'payment'
+      projectName: 'payment'
+      projectVersion: '1.0'
+      connectedServiceName: 'SonarQube'
+      breakBuild: true
 
   - script: |
       mkdir $(Build.ArtifactStagingDirectory)/publish
