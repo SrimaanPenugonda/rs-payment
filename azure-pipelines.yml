@@ -18,7 +18,7 @@ steps:
     displayName: 'Setup Sonar Scanner'
     
   - script: |
-      sonar-scanner sonar.host.url=http://52.91.45.74:9000/  -Dsonar.login=de8afb42f8814e0f5a1f7bc59627fc6fdaa67bad -Dsonar.projectKey=payment 
+      sonar-scanner -Dsonar.projectKey=payment -Dsonar.sources=. -Dsonar.host.url=http://52.91.45.74:9000 -Dsonar.login=de8afb42f8814e0f5a1f7bc59627fc6fdaa67bad 
     displayName: 'Run Sonar Scan'    
 
   - script: |
