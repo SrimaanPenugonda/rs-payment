@@ -1,7 +1,7 @@
 FROM      python:3
 RUN       mkdir /app
 WORKDIR   /app
-COPY      payment-docker.py .
+COPY      payment-docker.py payment.py
 COPY      payment.ini .
 COPY      rabbitmq.py .
 COPY      requirements.txt .
