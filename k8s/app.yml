@@ -11,6 +11,8 @@ spec:
       app: payment
   template:
     metadata:
+      annotations:
+        co.elastic.logs/enabled: "true"
       labels:
         app: payment
     spec:
