@@ -45,3 +45,4 @@ steps:
       versionOption: 'custom'
       versionPublish: '$(Build.SourceBranchName)'
     displayName: Publish Artficats
+     
