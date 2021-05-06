@@ -40,10 +40,10 @@ steps:
       command: 'publish'
       publishDirectory: '$(Build.SourcesDirectory)/publish'
       feedsToUsePublish: 'internal'
-      vstsFeedPublish: '736b4ce8-9eaf-495c-9983-ed63d9930834'
+      vstsFeedPublish: 'fc8ef47b-7e31-4f49-9f63-9da2010e7de3'
       vstsFeedPackagePublish: 'rspayment'
       versionOption: 'custom'
       versionPublish: '$(Build.SourceBranchName)'
-    displayName: Publish Artficats
+    displayName: Publish Artficats  
   
      
