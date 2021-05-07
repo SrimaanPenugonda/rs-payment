@@ -45,5 +45,16 @@ steps:
       versionOption: 'custom'
       versionPublish: '$(Build.SourceBranchName)'
     displayName: Publish Artficats  
+  - task: UniversalPackages@0
+    condition: contains(variables['Build.SourceBranch'],'tags')
+    inputs:
+      command: 'publish'
+      publishDirectory: '$(Build.SourcesDirectory)/publish'
+      feedsToUsePublish: 'internal'
+      vstsFeedPublish: '736b4ce8-9eaf-495c-9983-ed63d9930834'
+      vstsFeedPackagePublish: 'rspayment'
+      versionOption: 'custom'
+      versionPublish: '$(Build.SourceBranchName)'
+    displayName: Publish Artficats to srimaanaws feed
   
      
