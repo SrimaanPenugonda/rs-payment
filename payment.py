@@ -22,9 +22,9 @@ app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
 CART = os.getenv('CART_HOST', 'cart')
-CART_PORT = os.getenv('CART_PORT', 8080)
+CART_PORT = os.getenv('CART_PORT', 80)
 USER = os.getenv('USER_HOST', 'user')
-USER_PORT = os.getenv('USER_PORT', 8080)
+USER_PORT = os.getenv('USER_PORT', 80)
 PAYMENT_GATEWAY = os.getenv('PAYMENT_GATEWAY', 'https://google.com/')
 
 # Prometheus
@@ -182,6 +182,6 @@ if __name__ == "__main__":
     sh.setLevel(logging.INFO)
     fmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     app.logger.info('Payment gateway {}'.format(PAYMENT_GATEWAY))
-    port = int(os.getenv("SHOP_PAYMENT_PORT", "8080"))
+    port = int(os.getenv("SHOP_PAYMENT_PORT", "80"))
     app.logger.info('Starting on port {}'.format(port))
     app.run(host='0.0.0.0', port=port)
