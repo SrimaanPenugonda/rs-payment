@@ -1,0 +1,60 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include: [ "*" ]
+  tags:
+    include: [ "*" ]
+    
+pool: Default
+
+steps:
+
+#  - task: Docker@2
+#    inputs:
+#      containerRegistry: 'docker-hub'
+#      repository: 'rkalluru/d53-rs-payment'
+#      command: 'buildAndPush'
+#      Dockerfile: '**/Dockerfile'
+#      tags: '$(Build.BuildId)'
+
+  - script: |
+     curl -s https://raw.githubusercontent.com/linuxautomations/labautomation/master/tools/sonar-scanner/install.sh | sudo bash
+    displayName: 'Setup Sonar Scanner'
+
+  - script: |
+     sonar-scanner -Dsonar.projectKey=payment -Dsonar.sources=. -Dsonar.host.url=http://3.236.121.125:9000 -Dsonar.login=6409462b98489bc11c3c0bad3000e6b565322ea1 
+    displayName: 'Run Sonar Scan'
+
+  - script: |
+      mkdir $(Build.SourcesDirectory)/publish
+      cp -r payment.ini payment.py rabbitmq.py requirements.txt $(Build.SourcesDirectory)/publish
+    displayName: Prepare Artifacts
+#
+  - task: UniversalPackages@0
+    condition: contains(variables['Build.SourceBranch'],'tags')
+    inputs:
+      command: 'publish'
+      publishDirectory: '$(Build.SourcesDirectory)/publish'
+      feedsToUsePublish: 'internal'
+      vstsFeedPublish: 'fc8ef47b-7e31-4f49-9f63-9da2010e7de3'
+      vstsFeedPackagePublish: 'rspayment'
+      versionOption: 'custom'
+      versionPublish: '$(Build.SourceBranchName)'
+    displayName: Publish Artficats  
+  - task: UniversalPackages@0
+    condition: contains(variables['Build.SourceBranch'],'tags')
+    inputs:
+      command: 'publish'
+      publishDirectory: '$(Build.SourcesDirectory)/publish'
+      feedsToUsePublish: 'internal'
+      vstsFeedPublish: '736b4ce8-9eaf-495c-9983-ed63d9930834'
+      vstsFeedPackagePublish: 'rspayment'
+      versionOption: 'custom'
+      versionPublish: '$(Build.SourceBranchName)'
+    displayName: Publish Artficats to srimaanaws feed
+  
+     
