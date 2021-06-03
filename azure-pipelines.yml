@@ -12,54 +12,59 @@ trigger:
 pool: Default
 
 steps:
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: 'env'
+    displayName: Env Command #this task helps to check the BUILD parameters
 
-#  - task: Docker@2
-#    inputs:
-#      containerRegistry: 'docker-hub'
-#      repository: 'rkalluru/d53-rs-payment'
-#      command: 'buildAndPush'
-#      Dockerfile: '**/Dockerfile'
-#      tags: '$(Build.BuildId)'
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'docker-hub'
+      repository: 'srimaanaws2021/rs-payment'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
+      tags: 'latest'
 
-  - script: |
-     curl -s https://raw.githubusercontent.com/linuxautomations/labautomation/master/tools/sonar-scanner/install.sh | sudo bash
-     export SONAR_SCANNER_OPTS="-Xmx512m" 
-    displayName: 'Setup Sonar Scanner'
-
-  - script: |
-     sonar-scanner \
-      -Dsonar.projectKey=payment \
-      -Dsonar.sources=. \
-      -Dsonar.host.url=http://34.204.182.34:9000 \
-      -Dsonar.login=bbd3d3c7564ed0d74f45b0c8f035a5b799a5be48
-    displayName: 'Run Sonar Scan'
-
-  - script: |
-      mkdir $(Build.SourcesDirectory)/publish
-      cp -r payment.ini payment.py rabbitmq.py requirements.txt $(Build.SourcesDirectory)/publish
-    displayName: Prepare Artifacts
+#  - script: |
+#     curl -s https://raw.githubusercontent.com/linuxautomations/labautomation/master/tools/sonar-scanner/install.sh | sudo bash
+#     export SONAR_SCANNER_OPTS="-Xmx512m"
+#    displayName: 'Setup Sonar Scanner'
 #
-  - task: UniversalPackages@0
-    condition: contains(variables['Build.SourceBranch'],'tags')
-    inputs:
-      command: 'publish'
-      publishDirectory: '$(Build.SourcesDirectory)/publish'
-      feedsToUsePublish: 'internal'
-      vstsFeedPublish: 'fc8ef47b-7e31-4f49-9f63-9da2010e7de3'
-      vstsFeedPackagePublish: 'rspayment'
-      versionOption: 'custom'
-      versionPublish: '$(Build.SourceBranchName)'
-    displayName: Publish Artficats  
-  - task: UniversalPackages@0
-    condition: contains(variables['Build.SourceBranch'],'tags')
-    inputs:
-      command: 'publish'
-      publishDirectory: '$(Build.SourcesDirectory)/publish'
-      feedsToUsePublish: 'internal'
-      vstsFeedPublish: '736b4ce8-9eaf-495c-9983-ed63d9930834'
-      vstsFeedPackagePublish: 'rspayment'
-      versionOption: 'custom'
-      versionPublish: '$(Build.SourceBranchName)'
-    displayName: Publish Artficats to srimaanaws feed
-  
-     
+#  - script: |
+#     sonar-scanner \
+#      -Dsonar.projectKey=payment \
+#      -Dsonar.sources=. \
+#      -Dsonar.host.url=http://34.204.182.34:9000 \
+#      -Dsonar.login=bbd3d3c7564ed0d74f45b0c8f035a5b799a5be48
+#    displayName: 'Run Sonar Scan'
+#
+#  - script: |
+#      mkdir $(Build.SourcesDirectory)/publish
+#      cp -r payment.ini payment.py rabbitmq.py requirements.txt $(Build.SourcesDirectory)/publish
+#    displayName: Prepare Artifacts
+##
+#  - task: UniversalPackages@0
+#    condition: contains(variables['Build.SourceBranch'],'tags')
+#    inputs:
+#      command: 'publish'
+#      publishDirectory: '$(Build.SourcesDirectory)/publish'
+#      feedsToUsePublish: 'internal'
+#      vstsFeedPublish: 'fc8ef47b-7e31-4f49-9f63-9da2010e7de3'
+#      vstsFeedPackagePublish: 'rspayment'
+#      versionOption: 'custom'
+#      versionPublish: '$(Build.SourceBranchName)'
+#    displayName: Publish Artficats
+#  - task: UniversalPackages@0
+#    condition: contains(variables['Build.SourceBranch'],'tags')
+#    inputs:
+#      command: 'publish'
+#      publishDirectory: '$(Build.SourcesDirectory)/publish'
+#      feedsToUsePublish: 'internal'
+#      vstsFeedPublish: '736b4ce8-9eaf-495c-9983-ed63d9930834'
+#      vstsFeedPackagePublish: 'rspayment'
+#      versionOption: 'custom'
+#      versionPublish: '$(Build.SourceBranchName)'
+#    displayName: Publish Artficats to srimaanaws feed
+#
+#
