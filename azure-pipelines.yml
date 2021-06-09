@@ -24,7 +24,7 @@ steps:
       repository: 'srimaanaws2021/rs-payment'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
-      tags: 'latest'
+      tags: '$(Build.BuildId)'
 
 #  - script: |
 #     curl -s https://raw.githubusercontent.com/linuxautomations/labautomation/master/tools/sonar-scanner/install.sh | sudo bash

@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: payment
-          image: rkalluru/d53-rs-payment:VERSION
+          image: srimaanaws2021/rs-payment:VERSION
           ports:
             - containerPort: 8080
           env:
